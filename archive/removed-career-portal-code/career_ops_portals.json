@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Capco",
+    "provider": "greenhouse",
+    "careers_url": "https://job-boards.greenhouse.io/capco",
+    "api": "https://boards-api.greenhouse.io/v1/boards/capco/jobs"
+  },
+  {
+    "name": "Anthropic",
+    "careers_url": "https://job-boards.greenhouse.io/anthropic",
+    "api": "https://boards-api.greenhouse.io/v1/boards/anthropic/jobs"
+  },
+  {
+    "name": "Intercom",
+    "careers_url": "https://job-boards.greenhouse.io/intercom",
+    "api": "https://boards-api.greenhouse.io/v1/boards/intercom/jobs"
+  },
+  {
+    "name": "ElevenLabs",
+    "careers_url": "https://jobs.ashbyhq.com/elevenlabs"
+  },
+  {
+    "name": "Deepgram",
+    "careers_url": "https://jobs.ashbyhq.com/deepgram"
+  },
+  {
+    "name": "Airtable",
+    "careers_url": "https://job-boards.greenhouse.io/airtable",
+    "api": "https://boards-api.greenhouse.io/v1/boards/airtable/jobs"
+  },
+  {
+    "name": "Vercel",
+    "careers_url": "https://job-boards.greenhouse.io/vercel",
+    "api": "https://boards-api.greenhouse.io/v1/boards/vercel/jobs"
+  },
+  {
+    "name": "Temporal",
+    "careers_url": "https://job-boards.greenhouse.io/temporal",
+    "api": "https://boards-api.greenhouse.io/v1/boards/temporal/jobs"
+  },
+  {
+    "name": "Arize AI",
+    "careers_url": "https://job-boards.greenhouse.io/arizeai",
+    "api": "https://boards-api.greenhouse.io/v1/boards/arizeai/jobs"
+  },
+  {
+    "name": "Cohere",
+    "careers_url": "https://jobs.ashbyhq.com/cohere"
+  },
+  {
+    "name": "LangChain",
+    "careers_url": "https://jobs.ashbyhq.com/langchain"
+  },
+  {
+    "name": "Pinecone",
+    "careers_url": "https://jobs.ashbyhq.com/pinecone"
+  }
+]

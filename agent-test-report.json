@@ -1,0 +1,53 @@
+{
+  "model": "deepseek/deepseek-v4-flash-0731",
+  "synthetic": true,
+  "checks": {
+    "live_view_available": true,
+    "verified_synthetic_submission": true,
+    "agent_filled_fields": true
+  },
+  "events": [
+    {
+      "time": "2026-09-20T17:06:21.372084+00:00",
+      "text": "Opened employer application page."
+    },
+    {
+      "time": "2026-09-20T17:06:29.549958+00:00",
+      "text": "Planned 5 actions from one form inspection."
+    },
+    {
+      "time": "2026-09-20T17:06:30.740554+00:00",
+      "text": "Full name field"
+    },
+    {
+      "time": "2026-09-20T17:06:32.274240+00:00",
+      "text": "Email field"
+    },
+    {
+      "time": "2026-09-20T17:06:33.460836+00:00",
+      "text": "Phone field"
+    },
+    {
+      "time": "2026-09-20T17:06:38.193870+00:00",
+      "text": "Resume upload using approved document"
+    },
+    {
+      "time": "2026-09-20T17:06:42.937310+00:00",
+      "text": "Planned 1 actions from one form inspection."
+    },
+    {
+      "time": "2026-09-20T17:06:43.471959+00:00",
+      "text": "Submitting the approved application."
+    },
+    {
+      "time": "2026-09-20T17:06:47.499753+00:00",
+      "text": "Employer confirmation: Application successfully submitted"
+    }
+  ],
+  "scope": "Form planning and execution only; document generation verified in earlier run.",
+  "session_url": "https://www.browserbase.com/sessions/16ca39c2-96a7-44fb-b6d1-a6e599030724",
+  "browser_agent_seconds": 29.91,
+  "status": "submitted",
+  "model_batches": 2,
+  "passed": true
+}
