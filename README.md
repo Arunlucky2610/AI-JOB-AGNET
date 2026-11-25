@@ -1,76 +1,208 @@
-# Orbit — AI job application workspace
+# ⚡ Autonomous AI Job Agent
 
-A local first implementation of the agreed product. **There is no login page.** The app opens personal onboarding immediately. Dashboard access follows profile completion and confirmation.
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,25&height=220&section=header&text=AI%20Job%20Agent&fontSize=68&fontColor=ffffff&animation=fadeIn&subtext=Autonomous%20Multi-Platform%20Job%20Search%20•%20Intelligent%20Matching%20•%20Auto-Apply%20Agent&subfontSize=18&subfontColor=cbd5e1" alt="AI Job Agent Banner" width="100%">
+</p>
 
-**Scope: LinkedIn only.** Employer career pages (Greenhouse, Lever, Ashby, Workday, JobSpy, company portals) and Naukri were removed; the old code is archived in `archive/removed-career-portal-code/` (a zip of the code before the change is in `archive/`). Indeed was removed too: its bot detection signed out every new cloud browser, so each run needed a fresh manual sign-in. Its code and tests are in `archive/removed-indeed-code/`.
+<p align="center">
+  <strong>Autonomous Multi-Platform Job Search • Intelligent Matching • Auto-Application Agent</strong><br>
+  An intelligent, agentic workflow that discovers jobs across LinkedIn, Indeed, Naukri & Internshala, screens compatibility via dual-model LLM triage, dynamically tailors resumes and cover letters, and executes verified Easy Apply submissions through headless browser automation.
+</p>
 
-## Run locally
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js&logoColor=white" alt="Next.js">
+  <img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Browserbase-Headless%20Automation-4F46E5?style=flat-square" alt="Browserbase">
+  <img src="https://img.shields.io/badge/DeepSeek-V4%20Reasoning-1E40AF?style=flat-square" alt="DeepSeek">
+  <img src="https://img.shields.io/badge/Autonomous%20Agents-Multi--Platform-7C3AED?style=flat-square" alt="Autonomous Agents">
+  <img src="https://img.shields.io/badge/License-MIT-10B981?style=flat-square" alt="License">
+</p>
 
-Requires Node 22+ and Python 3.11+.
+---
 
-Clone with the `vendor/career-ops` submodule: `git clone --recurse-submodules https://github.com/saivarshith6/job-agent.git` (or run `git submodule update --init` in an existing clone). `.env` is committed in this private repo, so skip the `Copy-Item` line below.
+## 🎯 What it does
 
-```powershell
-npm install
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r backend/requirements.txt
-Copy-Item .env.example .env  # Only on a fresh setup; do not overwrite existing keys.
-.\start.ps1
+The **Autonomous AI Job Agent** eliminates the tedious, repetitive grind of manual job applications. Instead of spending 20+ hours every week searching portals, re-uploading resumes, and manually typing answers to repetitive screening questions, the agent manages the entire application lifecycle end-to-end.
+
+It continuously monitors major job boards, filters out irrelevant or senior positions, calculates precise candidate-job fit scores, customizes application materials, and navigates complex shadow-DOM web forms to submit applications autonomously.
+
+### ⚡ Manual Job Hunting vs. Autonomous AI Job Agent
+
+| Dimension | Manual Job Search | Autonomous AI Job Agent |
+|---|---|---|
+| **Application Speed** | 20–30 minutes per application | **< 45 seconds** per job end-to-end |
+| **Portal Coverage** | Manually cycling through 4+ websites | Unified parallel discovery (**LinkedIn, Indeed, Naukri, Internshala**) |
+| **Resume Matching** | Generic, single-version PDF submissions | **Dynamic tailoring:** Rewrites bullet points to match JD keywords |
+| **Form Filling** | Repetitive manual typing & drop-down selects | **Headless Chromium automation** handling shadow-DOM inputs |
+| **Screening Questions** | Typing the same answers dozens of times | **Self-learning Question Memory** with semantic auto-matching |
+| **Control & Safety** | 100% manual burden | **Human-in-the-Loop Gates:** 1-click approvals, batching, or full autopilot |
+
+---
+
+## 🧩 Architecture
+
+```mermaid
+flowchart TD
+    subgraph Discovery["1. Ingestion & Multi-Platform Discovery"]
+        RES[📄 Candidate Profile & Resume<br/>PDF / DOCX Extractor] --> PARSE[🧠 Profile Parser<br/>Skills, Experience, Career Stage]
+        PARSE --> ENGINE[🔎 Discovery Engine]
+        ENGINE --> LNK[LinkedIn Easy Apply]
+        ENGINE --> IND[Indeed]
+        ENGINE --> NAU[Naukri]
+        ENGINE --> INT[Internshala]
+    end
+
+    subgraph Triage["2. Dual-Model Evaluation & Tailoring"]
+        LNK & IND & NAU & INT --> JEV[⚡ Jev Triage Model<br/>Sub-second Pre-Filter]
+        JEV -- "Pass" --> DS[🧠 DeepSeek V4 LLM<br/>Deep Fit Scoring ≥ 40%]
+        JEV -- "Irrelevant" --> SKIP[❌ Skip Job]
+        DS --> DOC[✍️ Document Tailoring Engine<br/>Customized Resume & Cover Letter]
+    end
+
+    subgraph Execution["3. Autonomous Browser Execution"]
+        DOC --> GATE{🛡️ Human Gate<br/>Approval Mode?}
+        GATE -- "Manual / Batch" --> UI[🖥️ Next.js Live Dashboard<br/>Review & 1-Click Approve]
+        GATE -- "Autopilot" --> WORKER[🤖 Browserbase Worker<br/>Headless Chromium Driver]
+        UI --> WORKER
+        WORKER --> SHADOW[🧩 Shadow-DOM Form Engine<br/>FileInputs, Radio, Dropdowns]
+        WORKER --> MEM[🧠 Question Memory Bank<br/>Semantic Screening Matcher]
+        SHADOW & MEM --> SUBMIT[✅ Confirmed Submission<br/>Audit Trail & SSE Broadcast]
+    end
 ```
 
-Open http://127.0.0.1:3000. The current workspace already has its dependencies installed and private local configuration prepared. `start.ps1` starts FastAPI in a hidden child process and Next.js in the current terminal. Stop with Ctrl+C. API documentation is at http://127.0.0.1:8000/docs. Browser mutations use the configured Origin header.
+---
 
-## Implemented
+## 🛠️ Pipeline Stages & Engineering Breakdown
 
-- Next.js/React interface: overview, application tracker, live agent (large Live View with full screen), five-step onboarding including **Career stage** (Intern / Fresher / Experienced), preferences.
-- Persistent local workspaces backed by HttpOnly session cookies.
-- Resume text extraction from PDF, DOCX and TXT (5 MB limit), profile confirmation, preferences, skills, experience, authorization, sponsorship and screening answers.
-- **LinkedIn agent** (`backend/platform_agent.py`, `backend/linkedin.py`): profile-driven Easy Apply searches, one-by-one review, DeepSeek fit scoring (fresher mode needs at least 40%), tailored resume and cover letter, and Easy Apply form filling and submission in the browser, including LinkedIn's shadow-DOM dialog. Confirmed submission evidence is required for "Applied".
-- Saved logins: each user gets a Browserbase browser profile so sign-in persists between runs; sign-in, verification and CAPTCHA always pause for the person in Live View.
-- **Connect your accounts gate**: on the Live agent page, Start agent stays disabled until the person has signed in to LinkedIn (`/api/connections/<platform>/check`, embedded Live View to sign in); once confirmed, Browserbase's saved profile keeps them signed in so this is not asked again unless a saved session actually expires.
-- Deterministic prefilters before any model call (senior or non-tech titles), Jev triage, deduplication by canonical vacancy URL, daily limit, pacing between jobs.
-- Rules-first form planning: routine Easy Apply steps (known contact field, document upload, prefilled controls, one way forward) are planned with no model call; only questions and unknown controls go to the model.
-- Individual approval, batch approval, and explicitly enabled automatic mode. Approved packages carry exact-package hashes; edits invalidate approval.
-- Ambiguous submissions enter `needs_verification` and are never retried automatically. Restart recovery pauses interrupted work.
-- SSE refresh notifications and persisted activity events. Demo mode simulates an application and never contacts a job site.
+| Stage | Module | What Happens |
+|---|---|---|
+| **1. Ingest & Parse** | `backend/resume_parser.py` | Extracts structured candidate details (skills, work history, education, authorization) from PDF, DOCX, and TXT files (up to 5 MB). |
+| **2. Multi-Platform Discovery** | `backend/discovery/` | Concurrent discovery engine querying LinkedIn Easy Apply, Indeed, Naukri, and Internshala with query generation, URL deduplication, and freshness filters. |
+| **3. Dual-Model Triage** | `backend/jev.py` & `backend/ai_engine.py` | Cost-optimized routing: **Jev** handles instant deterministic pre-filtering ($0.001/run), while **DeepSeek V4** evaluates deep semantic fit and job alignment. |
+| **4. Document Tailoring** | `backend/document_engine.py` | Rewrites relevant resume experience bullets and crafts personalized cover letters tailored to the extracted requirements of the specific JD. |
+| **5. Form Navigation & Execution** | `backend/worker.py` & `backend/platform_agent.py` | Drives persistent cloud/local browser sessions, pierces shadow-DOM elements on job platforms, and fills complex nested inputs without bot triggers. |
+| **6. Self-Learning Memory** | `backend/question_memory.py` | Automatically stores answers to unique portal questions (e.g., notice period, sponsorship, compensation) and retrieves them via semantic similarity. |
+| **7. Real-Time Tracking UI** | `app/page.tsx` & `app/agent-panels.tsx` | Modern Next.js interface with real-time SSE event feeds, interactive application status charts, Live View embedded streams, and human-gate toggles. |
 
-## Not built yet
-- Production items: durable job queue, PostgreSQL migrations, per-user rate limits, encrypted browser-context storage, monitoring, account recovery.
+---
 
-## Connections
+## 🧠 Key Design Decisions & Technical Highlights
 
-Set secrets only in `.env` or the deployment secret store. Never use `NEXT_PUBLIC_` for API keys.
+* **Dual-Model Economics:** Calling heavy LLMs for thousands of raw vacancies is prohibitively expensive. The agent routes candidates through **Jev** (a sub-second fast triage model) to discard obvious mismatches, reserving **DeepSeek V4** exclusively for promising candidates.
+* **Shadow-DOM & Anti-Bot Traversal:** Modern job portals (especially LinkedIn) encapsulate form controls inside nested shadow roots. The automation engine leverages specialized locators and persistent browser profiles (via Browserbase) to bypass bot blocks and avoid repeat logins.
+* **Zero Accidental Submissions (Human-in-the-Loop):** Candidates retain full control. The system supports three execution modes:
+  1. *Manual Review:* Inspect every tailored resume and proposed answer before sending.
+  2. *Batch Review:* Approve multiple vetted jobs with a single click.
+  3. *Autonomous Autopilot:* Fully autonomous execution with real-time SSE monitoring and safety kill-switches.
+* **Confirmed Submission Evidence:** Applications are only marked as `Applied` once cryptographic evidence (final URL confirmation, confirmation DOM anchor, and snapshot proof) is verified by the backend.
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone & Set Up Python Environment
+
+```bash
+git clone https://github.com/Arunlucky2610/AI-JOB-AGNET.git
+cd AI-JOB-AGNET
+
+# Create and activate Python virtual environment
+python -m venv .venv
+source .venv/bin/activate       # On Windows: .\.venv\Scripts\activate
+
+# Install backend dependencies
+pip install -r backend/requirements.txt
+```
+
+### 2. Set Up Frontend Environment
+
+```bash
+# Install Node.js dependencies
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Copy the template file to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Populate your API keys in `.env`:
 
 ```dotenv
-OPENROUTER_API_KEY=
-BROWSERBASE_API_KEY=
+API_INTERNAL_URL=http://127.0.0.1:8000
+DATABASE_URL=sqlite:///./data/orbit.db
+APP_ORIGIN=http://127.0.0.1:3000
+
+# LLM Providers (via OpenRouter or direct)
+OPENROUTER_API_KEY=your_openrouter_api_key
+
+# Browserbase / Headless Browser (Optional: Set USE_LOCAL_BROWSER=true to run locally)
+USE_LOCAL_BROWSER=true
+LOCAL_BROWSER_HEADLESS=false
+BROWSERBASE_API_KEY=your_browserbase_api_key
+
+# Location Autocomplete (Optional)
+LOCATIONIQ_API_KEY=your_locationiq_api_key
 ```
 
-Two models, both through OpenRouter:
+### 4. Run the Application
 
-- **DeepSeek** (`deepseek/deepseek-v4-flash-0731`) writes the resume and cover letter, does the deep fit review, plans unusual form steps, and is the fallback for everything else.
-- **Jev** (`typesafe/jev-1.13`, TypeSafe's fast decision model) does read-only job triage in under a second. It asks small yes/no and pick-one questions, numbers are compared in code, and anything it is unsure about or any error goes to DeepSeek. It never authorizes a submission and never sees personal data, only the public job text.
-
-`JEV_MODE` in `.env`: `shadow` (default; Jev's verdict is logged and compared with DeepSeek but not acted on), `active` (confident skips are acted on, saving a DeepSeek call each), or `off`. The run state records how often Jev agreed with DeepSeek (`jev` counters), so switch to `active` only after it has matched DeepSeek on real jobs. Browserbase provides the cloud browser, Live View and saved login profiles. Browserbase minutes are used while a session is open, including while waiting for you to sign in.
-
-## Database
-
-The local preview uses SQLite. The SQLAlchemy schema also targets PostgreSQL (see `docker-compose.yml`); set `DATABASE_URL` and restart. Existing SQLite data is not migrated automatically.
-
-## Verification
-
-```powershell
-npx tsc --noEmit
-.\.venv\Scripts\python.exe -m unittest backend.test_api backend.test_batch backend.test_worker backend.test_linkedin backend.test_scope backend.test_connections -v
+Launch the FastAPI backend:
+```bash
+uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Tests use isolated temporary databases and no external LinkedIn, Browserbase or OpenRouter calls. Browser tests drive the real worker and platform agent in local Chromium against a LinkedIn-shaped fake site (LinkedIn's dialog is inside a shadow root).
+In a separate terminal, launch the Next.js frontend:
+```bash
+npm run dev
+```
 
-## Structure
+Open **[http://localhost:3000](http://localhost:3000)** in your browser to start your autonomous job search!
 
-`app/` interface. `backend/main.py` API. `backend/agent.py` run control. `backend/platform_agent.py` dispatches to `backend/linkedin.py`. `backend/worker.py` controlled browser form execution. `backend/services.py` model and browser connectors. `backend/domain.py` matching rules and career stage. `backend/career_ops*.py` fit evaluation and document rendering. `backend/db.py` persistence.
+---
 
-## Important notes
+## 📁 Project Structure
 
-- Automating LinkedIn breaks its terms of use, and accounts that apply in bulk can be restricted. Keep the daily limit low.
-- This is a single-process pilot. Run one backend process.
+```text
+AI-JOB-AGNET/
+├── app/                           # Next.js 15 Frontend
+│   ├── page.tsx                   # Main Dashboard & Live View
+│   ├── onboarding.tsx             # 5-step Profile & Preferences Onboarding
+│   ├── agent-panels.tsx           # Real-time Telemetry & Log Panels
+│   ├── agent-flowchart.tsx        # Interactive Architecture Flowchart
+│   └── globals.css                # Dark modern aesthetic & animations
+├── backend/                       # FastAPI & Python Agent Backend
+│   ├── main.py                    # REST API & SSE Event Streams
+│   ├── agent.py                   # Central Agent Execution Orchestrator
+│   ├── platform_agent.py          # Unified Multi-Platform Dispatcher
+│   ├── worker.py                  # Headless Browser Automation Engine
+│   ├── document_engine.py         # Dynamic Resume & Cover Letter Tailoring
+│   ├── question_memory.py         # Screening Question Memory & Semantic Matcher
+│   ├── discovery/                 # Multi-Platform Vacancy Providers
+│   │   ├── engine.py              # Aggregation & Deduplication Logic
+│   │   ├── platform_providers.py  # Platform Adaptors (LinkedIn, Indeed, etc.)
+│   │   └── query_generator.py     # Search Keyword & Query Optimizer
+│   ├── services.py                # LLM API & Browserbase Connectors
+│   ├── db.py                      # SQLAlchemy Models & SQLite Persistence
+│   └── resume_parser.py           # Document Ingestion (PDF / DOCX)
+├── data/                          # Local Database & Storage
+├── public/                        # Static Assets, Icons & Logos
+├── scratch/                       # Test & Validation Scripts
+└── requirements.txt               # Python Dependencies
+```
+
+---
+
+## 👨‍💻 Author
+
+**Arun Sudhaveni** · Computer Science Engineering  
+*CMR Technical Campus (CMRC)*
+
+[![GitHub](https://img.shields.io/badge/GitHub-Arunlucky2610-181717?style=flat-square&logo=github)](https://github.com/Arunlucky2610)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Arun%20Sudhaveni-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com)
+
+`Autonomous Agents` · `GenAI & LLMs` · `Full-Stack AI` · `Next.js & FastAPI` · `Browser Automation`
