@@ -1,7 +1,7 @@
 # ⚡ Autonomous AI Job Agent
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,25&height=220&section=header&text=AI%20Job%20Agent&fontSize=68&fontColor=ffffff&animation=fadeIn&subtext=Autonomous%20Multi-Platform%20Job%20Search%20•%20Intelligent%20Matching%20•%20Auto-Apply%20Agent&subfontSize=18&subfontColor=cbd5e1" alt="AI Job Agent Banner" width="100%">
+  <img src="assets/job-agent-pro.gif" alt="Autonomous AI Job Agent Pipeline Demo" width="100%">
 </p>
 
 <p align="center">
